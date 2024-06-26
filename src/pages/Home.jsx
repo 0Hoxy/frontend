@@ -23,6 +23,16 @@ function Home() {
   };
   return (
     <div className="container">
+      <nav className="navbar bg-body-tertiary">
+        <div className="container-fluid">
+          <form className="d-flex" role="search">
+            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+            <button className="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
+      </nav>
       <table className="table border shadow text-center my-4">
         <thead>
           <tr>
@@ -41,7 +51,9 @@ function Home() {
               <td>{user.username}</td>
               <td>{user.email}</td>
               <td>
-                <button className="btn btn-outline-secondary mx-2">보기</button>
+                <Link to={`/viewuser/${user.id}`} className="btn btn-outline-secondary mx-2">
+                  보기
+                </Link>
                 <Link to={`/edituser/${user.id}`} className="btn btn-outline-warning mx-2">
                   수정
                 </Link>
