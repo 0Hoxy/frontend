@@ -4,15 +4,17 @@ import { Link } from "react-router-dom";
 
 function Home() {
   const [users, setUsers] = useState([]);
-
+  const [search, setSearch] = useState("");
+  //유저갱신
   useEffect(() => {
     loadUsers();
   }, []);
-
+  //유저갱신 함수
   const loadUsers = async () => {
     const result = await axios.get("http://localhost:8080/users");
     setUsers(result.data);
   };
+  //유저삭제 함수
   const deleteUser = async (id) => {
     // if (window.confirm("정말로 삭제할까요?")) 구문을 사용하여 사용자가 삭제를 확인할 경우에만 삭제 요청을 보내도록 합니다. {}로 감싸는거 잊었음
     if (window.confirm("정말로 삭제할까요?")) {
@@ -21,12 +23,38 @@ function Home() {
       loadUsers();
     }
   };
+  // 검색기능 함수
+  const searchUser = async () => {
+    if (search.trim() !== "") {
+      const result = await axios.get(`http://localhost:8080/searchUser?search=${search}`);
+      setUsers(result.data);
+    } else {
+      loadUsers();
+    }
+  };
+  const onInputChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    searchUser();
+  };
+
+  //프론트
   return (
     <div className="container">
       <nav className="navbar bg-body-tertiary">
         <div className="container-fluid">
-          <form className="d-flex" role="search">
-            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+          <form className="d-flex" role="search" onSubmit={onSubmit}>
+            <input
+              className="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              value={search}
+              onChange={onInputChange}
+            />
             <button className="btn btn-outline-success" type="submit">
               Search
             </button>
